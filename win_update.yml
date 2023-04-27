@@ -1,0 +1,17 @@
+- name: Window Updates
+  hosts: all
+
+  tasks:
+  - name: Install all updates and reboot as many times as needed
+    win_updates:
+      category_names:
+      - CriticalUpdates
+      - SecurityUpdates
+      - UpdateRollups
+      state: installed
+    register: update_result
+  - debug: var=update_result
+
+  - name: reboot host if required
+    win_reboot:
+    when: update_result.reboot_required
