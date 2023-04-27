@@ -1,0 +1,12 @@
+- name: Window Update Commands
+  hosts: all
+
+  tasks:
+  - name: Run shell
+    win_shell: |
+      Get-WUHistory -MaxDate (Get-Date).AddDays(-30) -Last 10
+      Get-WindowsUpdate
+
+    register: data
+
+  - debug: var=data.stdout_lines
